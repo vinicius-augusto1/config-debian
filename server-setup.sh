@@ -23,7 +23,7 @@ iface $IFACE_LAN inet static
     netmask $NETMASK
 EOF
 
-systemctl restart networking
+systemctl restart NetworkManager
 
 # ---------- Ativar roteamento ----------
 echo "[+] Ativando IP Forwarding..."
