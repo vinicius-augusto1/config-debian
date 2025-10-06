@@ -16,7 +16,7 @@ auto $IFACE
 iface $IFACE inet dhcp
 EOF
 
-systemctl restart networking
+systemctl restart NetworkManager
 
 # ---------- Teste de conectividade ----------
 echo "[+] Testando conectividade..."
