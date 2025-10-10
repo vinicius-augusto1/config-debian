@@ -93,6 +93,50 @@ EOF
 systemctl restart kea-dhcp4-server.service
 systemctl enable kea-dhcp4-server.service
 
+# ---------- Instalar e configurar Squid ----------
+echo "[+] Instalando e configurando Squid..."
+apt install -y squid
+
+# Backup da configuração original
+cp /etc/squid/squid.conf /etc/squid/squid.conf.bak.$(date +%F-%H%M)
+
+# Criação de lista de bloqueios
+cat <<EOF > /etc/squid/blocked-sites.acl
+.facebook.com
+.instagram.com
+.youtube.com
+.tiktok.com
+EOF
+
+# Nova configuração do Squid
+cat <<EOF > /etc/squid/squid.conf
+# Configuração básica do Squid Proxy
+http_port 3128
+visible_hostname servidor-proxy
+
+# ACLs
+acl bloqueados dstdomain "/etc/squid/blocked-sites.acl"
+http_access deny bloqueados
+
+# Permitir acesso da LAN
+acl rede_local src 192.168.0.0/24
+http_access allow rede_local
+
+# Negar o restante
+http_access deny all
+
+# Logs
+access_log /var/log/squid/access.log
+cache_log /var/log/squid/cache.log
+EOF
+
+systemctl restart squid
+systemctl enable squid
+
+echo "[OK] Squid instalado e sites bloqueados."
+
+
+
 # ---------- Ativar Cockpit ----------
 echo "[+] Habilitando Cockpit..."
 systemctl enable --now cockpit.socket
