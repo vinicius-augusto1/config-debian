@@ -114,15 +114,13 @@ cat <<EOF > /etc/squid/squid.conf
 http_port 3128
 visible_hostname servidor-proxy
 
-# ACLs
-acl bloqueados dstdomain "/etc/squid/blocked-sites.acl"
-http_access deny bloqueados
-
 # Permitir acesso da LAN
 acl rede_local src 192.168.0.0/24
-http_access allow rede_local
+acl bloqueados dstdomain "/etc/squid/blocked-sites.acl"
 
 # Negar o restante
+http_access deny bloqueados
+http_access allow rede_local
 http_access deny all
 
 # Logs
