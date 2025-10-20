@@ -7,7 +7,7 @@ apt update -y && apt upgrade -y
 apt install -y net-tools network-manager vim
 
 # ---------- Ativar DHCP automático ----------
-IFACE="enp0s8"
+IFACE="enp0s3"
 echo "[+] Configurando $IFACE para DHCP..."
 cp /etc/network/interfaces /etc/network/interfaces.bak.$(date +%F-%H%M)
 cat <<EOF >> /etc/network/interfaces
